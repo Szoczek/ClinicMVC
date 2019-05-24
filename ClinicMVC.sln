@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicMVC", "ClinicMVC\ClinicMVC.csproj", "{0AA8CD57-FBD9-480E-8216-8D4288E76018}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{88D72562-E153-4575-83A6-40FB0C69EA70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{A4E1110F-F94D-4BC1-9A19-D88619F5CDEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AA8CD57-FBD9-480E-8216-8D4288E76018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA8CD57-FBD9-480E-8216-8D4288E76018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA8CD57-FBD9-480E-8216-8D4288E76018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA8CD57-FBD9-480E-8216-8D4288E76018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D72562-E153-4575-83A6-40FB0C69EA70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D72562-E153-4575-83A6-40FB0C69EA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D72562-E153-4575-83A6-40FB0C69EA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D72562-E153-4575-83A6-40FB0C69EA70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4E1110F-F94D-4BC1-9A19-D88619F5CDEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4E1110F-F94D-4BC1-9A19-D88619F5CDEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4E1110F-F94D-4BC1-9A19-D88619F5CDEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4E1110F-F94D-4BC1-9A19-D88619F5CDEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E88505E-CD7D-4819-A0AB-A908BEC2F03B}
+	EndGlobalSection
+EndGlobal
