@@ -1,5 +1,3 @@
-using System;
-
 namespace ClinicMVC.Models
 {
     public class ErrorViewModel

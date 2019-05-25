@@ -6,6 +6,7 @@ using Database.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Services.Utilities;
 
 namespace Services.Implementations
 {
@@ -16,15 +17,20 @@ namespace Services.Implementations
         {
             _dataContext = dataContext;
         }
-
         public async Task<ClaimsPrincipal> Authenticate(User user)
         {
+
+            UserRoles role = user.IsAdmin ? UserRoles.Admin
+                : user.IsDoctor() ? UserRoles.Doctor
+                : user.IsPatient() ? UserRoles.Patient
+                : UserRoles.User;
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(), CookieAuthenticationDefaults.AuthenticationScheme),
                 new Claim(ClaimTypes.Email, user.Login, CookieAuthenticationDefaults.AuthenticationScheme),
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}", CookieAuthenticationDefaults.AuthenticationScheme),
-                new Claim(ClaimTypes.Role, user.IsAdmin ? "Administrator" : "User", CookieAuthenticationDefaults.AuthenticationScheme)
+                new Claim(ClaimTypes.Role, role.ToString(), CookieAuthenticationDefaults.AuthenticationScheme)
             };
 
             var userIdentity = new ClaimsIdentity(claims,
