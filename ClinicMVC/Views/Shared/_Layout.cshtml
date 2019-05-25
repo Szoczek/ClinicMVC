@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Services.Utilities;
+@using System.Security.Claims;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -36,6 +39,28 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
+                            string name = User.Claims
+                                .FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+
+                            if (User.IsInRole(UserRoles.User.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="User" asp-action="Account">name</a>
+                                </li>
+                            }
+                            if (User.IsInRole(UserRoles.Doctor.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Account">name</a>
+                                </li>
+                            }
+                            if (User.IsInRole(UserRoles.Patient.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Patient" asp-action="Account">name</a>
+                                </li>
+                            }
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="User" asp-action="Logout">Logout</a>
                             </li>

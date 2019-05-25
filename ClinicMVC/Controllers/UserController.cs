@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using ClinicMVC.Models;
+using ClinicMVC.Models.UserViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +19,39 @@ namespace ClinicMVC.Controllers
         public UserController(UserService userService)
         {
             _userService = userService;
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Account()
+        {
+            var user = await _userService
+                .GetById(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            return View(new AccountViewModel()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Login = user.Login,
+                Password = user.Password
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Account(AccountViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = vm.ConvertToDataModel();
+                await _userService.PatchUser(user);
+
+                var principal = await _userService.Authenticate(user);
+                await HttpContext
+                    .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(vm);
         }
 
         [AllowAnonymous]

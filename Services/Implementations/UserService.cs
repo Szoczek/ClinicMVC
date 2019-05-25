@@ -43,7 +43,7 @@ namespace Services.Implementations
             return await Task.FromResult(principal);
         }
 
-        public async Task<User> Get(string id)
+        public async Task<User> GetById(string id)
         {
             Guid userId = Guid.Parse(id);
             User user = await _dataContext.GetCollection<User>()
@@ -62,6 +62,18 @@ namespace Services.Implementations
             if (user == null)
                 throw new Exception();
 
+            return user;
+        }
+
+        public async Task<User> PatchUser(User user)
+        {
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            await _dataContext.GetCollection<User>()
+                .FindOneAndReplaceAsync(Builders<User>.Filter.Where(x => x.Id.Equals(user.Id)), user);
+
+            user = await _dataContext.GetCollection<User>()
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.Id.Equals(user.Id));
             return user;
         }
 

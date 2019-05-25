@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClinicMVC.Models
+namespace ClinicMVC.Models.UserViewModels
 {
     public class LoginViewModel
     {
