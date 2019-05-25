@@ -1,4 +1,4 @@
-﻿@model ClinicMVC.Models.PatientViewModels.AccountViewModel
+﻿@model ClinicMVC.Models.DoctorViewModels.AccountViewModel
 
 @{
     ViewData["Title"] = "Account";
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input type="password" asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -41,10 +41,30 @@
                 <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
+            <hr />
+
+            <h3 class="text-xl-center">Your active contract:</h3>
+            <hr />
+
             <div class="form-group">
-                <label asp-for="BloodType" class="control-label"></label>
-                <input asp-for="BloodType" class="form-control" />
-                <span asp-validation-for="BloodType" class="text-danger"></span>
+                <label asp-for="StartDate" class="control-label"></label>
+                <input readonly="readonly" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input readonly="readonly" asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input readonly="readonly" asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContractId" class="control-label"></label>
+                <input type="hidden" asp-for="ContractId" class="form-control" />
+                <span asp-validation-for="ContractId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -54,7 +74,7 @@
 </div>
 
 <div>
-    <a class="btn btn-info" asp-action="Index" asp-controller="Home">Home</a>
+    <a class="btn btn-info" asp-controller="Home" asp-action="Index">Home</a>
 </div>
 
 @section Scripts {

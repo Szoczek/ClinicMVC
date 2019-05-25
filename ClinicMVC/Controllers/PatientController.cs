@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ClinicMVC.Models.PatientViewModels;
@@ -21,9 +19,43 @@ namespace ClinicMVC.Controllers
             this._userService = userService;
         }
 
+        [Authorize(Roles = "Patient")]
         public IActionResult Index()
         {
             return View();
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Create()
+        {
+            var user = await _userService
+                .GetById(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            return View(new AccountViewModel()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Login = user.Login,
+                Password = user.Password,
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AccountViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = vm.ConvertToDataModel();
+                await _userService.PatchUser(user);
+
+                var principal = await _userService.Authenticate(user);
+                await HttpContext
+                    .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(vm);
         }
 
         [Authorize(Roles = "Patient")]
