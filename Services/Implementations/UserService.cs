@@ -62,7 +62,7 @@ namespace Services.Implementations
         {
             return await _dataContext.GetCollection<User>()
                 .AsQueryable()
-                .Where(x => x.IsPatient()).ToListAsync();
+                .Where(x => x.Patient != null).ToListAsync();
         }
 
         public async Task<User> Login(string login, string password)

@@ -50,6 +50,7 @@ namespace ClinicMVC
             services.AddSingleton<DataContext>();
             services.AddSingleton<UserService>();
             services.AddSingleton<VisitService>();
+            services.AddSingleton<DataService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
