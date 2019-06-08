@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Database;
@@ -13,10 +15,7 @@ namespace Services.Implementations
     public class UserService : IUserService
     {
         private readonly DataContext _dataContext;
-        public UserService(DataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
+        public UserService(DataContext dataContext) => _dataContext = dataContext;
         public async Task<ClaimsPrincipal> Authenticate(User user)
         {
 
@@ -52,15 +51,32 @@ namespace Services.Implementations
             return user;
         }
 
+        public async Task<IEnumerable<User>> GetDoctors()
+        {
+            return await _dataContext.GetCollection<User>()
+                .AsQueryable()
+                .Where(x => x.Doctor != null).ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetPatients()
+        {
+            return await _dataContext.GetCollection<User>()
+                .AsQueryable()
+                .Where(x => x.IsPatient()).ToListAsync();
+        }
+
         public async Task<User> Login(string login, string password)
         {
-            var user = await _dataContext
+            var users = await _dataContext
                 .GetCollection<User>()
                 .AsQueryable()
-                .FirstOrDefaultAsync(x => x.Login.Equals(login) && BCrypt.Net.BCrypt.Verify(password, x.Password));
+                .Where(x => x.Login.Equals(login)).ToListAsync();
+
+            var user = users
+                .FirstOrDefault(x => BCrypt.Net.BCrypt.Verify(password, x.Password.ToString()));
 
             if (user == null)
-                throw new Exception();
+                throw new Exception("Invalid login or password");
 
             return user;
         }

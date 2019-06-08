@@ -8,7 +8,7 @@ namespace Database.Models
     {
         public Guid Id { get; set; }
         public Contract Contract { get; set; }
-        public IEnumerable<Specialties> Specialties { get; set; }
+        public Specialties Speciality { get; set; }
         public DateTime DateOfBirth { get; set; }
     }
 }

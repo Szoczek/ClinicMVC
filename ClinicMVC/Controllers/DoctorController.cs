@@ -40,7 +40,7 @@ namespace ClinicMVC.Controllers
                 ContractId = user.Doctor.Contract.Id,
                 EndDate = user.Doctor.Contract.EndDate,
                 Salary = user.Doctor.Contract.Salary,
-                Specialties = user.Doctor.Specialties,
+                Speciality = user.Doctor.Speciality,
                 StartDate = user.Doctor.Contract.StartDate
             });
         }

@@ -24,51 +24,53 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">ClinicMVC</a>
+                <a class="navbar-brand text-primary" asp-controller="Home" asp-action="Index">ClinicMVC</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        <li class="dropdown-item alert-info">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="dropdown-item alert-success">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="dropdown-item alert-primary">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="About">About</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            string name = User.Claims
-                                .FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
-
-                            if (User.IsInRole(UserRoles.User.ToString()))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="User" asp-action="Account">name</a>
-                                </li>
-                            }
-                            if (User.IsInRole(UserRoles.Doctor.ToString()))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Account">name</a>
-                                </li>
-                            }
-                            if (User.IsInRole(UserRoles.Patient.ToString()))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Patient" asp-action="Account">name</a>
-                                </li>
-                            }
-
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="User" asp-action="Logout">Logout</a>
-                            </li>
-                        }
                     </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        string name = User.Claims
+                            .FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+                        <div class="col-sm-5">
+
+                            @if (User.IsInRole(UserRoles.User.ToString()))
+                            {
+                                <div class="dropdown-item alert-success">
+                                    <a class="nav-link text-dark" asp-controller="User" asp-action="Account">@name</a>
+                                </div>
+                            }
+                            @if (User.IsInRole(UserRoles.Doctor.ToString()))
+                            {
+                                <div class="dropdown-item alert-success">
+                                    <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Account">@name</a>
+                                </div>
+                            }
+                            @if (User.IsInRole(UserRoles.Patient.ToString()))
+                            {
+                                <div class="dropdown-item alert-success">
+                                    <a class="nav-link text-dark" asp-controller="Patient" asp-action="Account">@name</a>
+                                </div>
+                            }
+
+                            <div class="dropdown-item alert-danger">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Logout">Logout</a>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>

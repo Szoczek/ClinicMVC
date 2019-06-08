@@ -15,5 +15,7 @@ namespace Database.Models
 
         public bool IsDoctor() => this.Doctor != null;
         public bool IsPatient() => this.Patient != null;
+
+        public string GetFullName() => this.FirstName + " " + this.LastName;
     }
 }

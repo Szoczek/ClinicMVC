@@ -10,6 +10,7 @@ namespace ClinicMVC.Models.UserViewModels
         [Required]
         [MinLength(6)]
         public string Password { get; set; }
+        [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
     }
 }

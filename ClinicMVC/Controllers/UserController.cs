@@ -75,7 +75,7 @@ namespace ClinicMVC.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Password", "Password or login invalid");
+                    ModelState.AddModelError("Password", ex.Message);
                     vm.Password = string.Empty;
                     return View(vm);
                 }

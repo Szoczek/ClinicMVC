@@ -1,4 +1,5 @@
-﻿@model ClinicMVC.Models.DoctorViewModels.AccountViewModel
+﻿@using Database.Models.Utilities
+@model ClinicMVC.Models.DoctorViewModels.AccountViewModel
 
 @{
     ViewData["Title"] = "Account";
@@ -12,7 +13,6 @@
         <form asp-action="Account" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
                 <input type="hidden" asp-for="Id" class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
@@ -38,9 +38,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
+                <input type="date" asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Speciality" class="control-label"></label>
+                <select class="form-control" asp-for="Speciality" asp-items="Html.GetEnumSelectList<Specialties>()"></select>
+                <span asp-validation-for="Speciality" class="text-danger"></span>
+            </div>
+
             <hr />
 
             <h3 class="text-xl-center">Your active contract:</h3>
@@ -48,21 +54,20 @@
 
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input readonly="readonly" asp-for="StartDate" class="form-control" />
+                <input readonly="readonly" type="date" asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input readonly="readonly" asp-for="EndDate" class="form-control" />
+                <input readonly="readonly" type="date" asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Salary" class="control-label"></label>
-                <input readonly="readonly" asp-for="Salary" class="form-control" />
+                <input readonly="readonly" type="number" asp-for="Salary" class="form-control" />
                 <span asp-validation-for="Salary" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ContractId" class="control-label"></label>
                 <input type="hidden" asp-for="ContractId" class="form-control" />
                 <span asp-validation-for="ContractId" class="text-danger"></span>
             </div>

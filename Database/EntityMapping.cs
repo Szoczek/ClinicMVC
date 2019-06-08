@@ -35,6 +35,13 @@ namespace Database
                 x.SetIgnoreExtraElements(true);
             });
 
+            BsonClassMap.RegisterClassMap<Visit>(x =>
+            {
+                x.AutoMap();
+                x.MapIdMember(y => y.Id);
+                x.SetIgnoreExtraElements(true);
+            });
+
             BsonClassMap.RegisterClassMap<About>(x =>
             {
                 x.AutoMap();

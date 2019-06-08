@@ -26,7 +26,7 @@ namespace ClinicMVC.Models.DoctorViewModels
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
         [Required]
-        public IEnumerable<Specialties> Specialties { get; set; }
+        public Specialties Speciality { get; set; }
         [Required]
         public DateTime StartDate { get; set; }
         [Required]
@@ -40,21 +40,24 @@ namespace ClinicMVC.Models.DoctorViewModels
         public User ConvertToDataModel()
         {
             var user = new User();
-
             user.Id = this.Id;
             user.Login = this.Login;
             user.Password = this.Password;
             user.FirstName = this.FirstName;
             user.LastName = this.LastName;
 
-            user.Doctor.Id = this.Id;
-            user.Doctor.DateOfBirth = this.DateOfBirth;
-            user.Doctor.Specialties = Specialties;
+            var doctor = new Doctor();
+            doctor.Id = this.Id;
+            doctor.DateOfBirth = this.DateOfBirth;
+            doctor.Speciality = Speciality;
+            user.Doctor = doctor;
 
-            user.Doctor.Contract.Id = this.ContractId;
-            user.Doctor.Contract.StartDate = this.StartDate;
-            user.Doctor.Contract.EndDate = this.EndDate;
-            user.Doctor.Contract.Salary = this.Salary;
+            var contract = new Contract();
+            contract.Id = this.ContractId;
+            contract.StartDate = this.StartDate;
+            contract.EndDate = this.EndDate;
+            contract.Salary = this.Salary;
+            user.Doctor.Contract = contract;
 
             return user;
         }

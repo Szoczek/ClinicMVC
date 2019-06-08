@@ -36,11 +36,12 @@ namespace ClinicMVC.Models.PatientViewModels
             user.Password = this.Password;
             user.FirstName = this.FirstName;
             user.LastName = this.LastName;
+            var patient = new Patient();
+            patient.Id = this.Id;
+            patient.DateOfBirth = this.DateOfBirth;
+            patient.BloodType = this.BloodType;
 
-            user.Patient.Id = this.Id;
-            user.Patient.DateOfBirth = this.DateOfBirth;
-            user.Patient.BloodType = this.BloodType;
-
+            user.Patient = patient;
             return user;
         }
     }
