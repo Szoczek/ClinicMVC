@@ -1,5 +1,6 @@
 ﻿using Database.Models;
-using System.Collections;
+using Database.Models.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,8 +13,10 @@ namespace Services.Implementations
         Task<ClaimsPrincipal> Authenticate(User user);
         Task<User> Login(string login, string password);
         Task<User> GetById(string id);
+        Task<User> GetById(Guid id);
         Task<User> PatchUser(User user);
         Task<IEnumerable<User>> GetDoctors();
         Task<IEnumerable<User>> GetPatients();
+        Task<Dictionary<string, string>> GetDoctorsForSpeciality(Specialties speiciality, User doctor = null);
     }
 }

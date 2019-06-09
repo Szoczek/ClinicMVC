@@ -6,8 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ClinicMVC.Models.VisitViewModels
 {
-    public class CreateViewModel
+    public class EditViewModel
     {
+        [Required]
         public Guid Id { get; set; }
         [Required]
         [Display(Name = "Date")]
@@ -19,6 +20,7 @@ namespace ClinicMVC.Models.VisitViewModels
         [Required]
         [Display(Name = "Doctor")]
         public string DoctorId { get; set; }
+        public string DoctorName { get; set; }
         public Dictionary<string, string> Doctors { get; set; }
 
         public Visit ConvertToDataModel()

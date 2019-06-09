@@ -12,6 +12,5 @@ namespace Database.Models
         public User Doctor { get; set; }
         public DateTime EndDate { get; set; }
         public string Notes { get; set; }
-
     }
 }

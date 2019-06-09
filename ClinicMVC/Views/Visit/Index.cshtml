@@ -5,57 +5,51 @@
 }
 
 <p>
-    <a class="btn btn-info" asp-action="Create">Book visit</a>
+    <a class="btn btn-success" asp-action="Create">Book new visit</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Doctor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-active table-light">
+    <table class="table table-striped table-hover">
+        <thead>
             <tr>
-                <td>
-                    @Html.HiddenFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Doctor.GetFullName())
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
-                @if (item.EndDate.Equals(DateTime.MinValue))
+                <th>Id</th>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>End date</th>
+                <th>Notes</th>
+                @if (Model.Any(x => x.EndDate.Equals(DateTime.MinValue)))
                 {
-                    <td>
-
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
+                    <th>Actions</th>
                 }
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                string endDate = item.EndDate.Equals(DateTime.MinValue)
+                    ? ""
+                    : item.EndDate.ToString("g");
+
+                <tr>
+                    <td>@item.Id.ToString()</td>
+                    <td>@item.StartDate.ToString("g")</td>
+                    <td>@item.Doctor.GetFullName()</td>
+                    <td>@endDate</td>
+                    <td>@item.Notes</td>
+                    @if (item.EndDate.Equals(DateTime.MinValue))
+                    {
+                        <td>
+                            <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <br />
+                            <a class="btn btn-danger" m asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a class="btn btn-info" asp-action="Index" asp-controller="Home">Home</a>
+</div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -38,10 +39,15 @@ namespace ClinicMVC.Controllers
         {
             var user = await _userService
                 .GetById(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            string nowstr = DateTime.Now.ToString("g", CultureInfo.CreateSpecificCulture("pl-PL"));
+            DateTime now = DateTime.Parse(nowstr);
 
-            var vm = new CreateViewModel();
-            vm.Patient = user;
-            return View(vm);
+            return View(new CreateViewModel()
+            {
+                StartDate = now,
+                PatientId = user.Id,
+                Doctors = await _userService.GetDoctorsForSpeciality(Specialties.Pediatrics)
+            });
         }
 
 
@@ -61,15 +67,25 @@ namespace ClinicMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateViewModel vm)
         {
+            if (vm.StartDate < DateTime.Now)
+            {
+                ModelState.AddModelError("StartDate", "Date must be in future!");
+                vm.Doctors = await _userService.GetDoctorsForSpeciality(vm.Speciality);
+                return View(vm);
+            }
+
             if (ModelState.IsValid)
             {
+                vm.StartDate = vm.StartDate.AddHours(2);
                 var visit = vm.ConvertToDataModel();
+                visit.Patient = await _userService.GetById(vm.PatientId);
                 visit.Doctor = await _userService.GetById(vm.DoctorId);
 
                 await _visitService
                 .CreateVisit(visit);
                 return RedirectToAction("Index");
             }
+            vm.Doctors = await _userService.GetDoctorsForSpeciality(vm.Speciality);
             return View(vm);
         }
 
@@ -83,26 +99,37 @@ namespace ClinicMVC.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var visit = await _visitService.GetVisitById(id);
-            return View(new CreateViewModel()
+            return View(new EditViewModel()
             {
                 Id = visit.Id,
                 DoctorId = visit.Doctor.Id.ToString(),
-                Patient = visit.Patient,
+                DoctorName = visit.Doctor.GetFullName(),
+                PatientId = visit.Patient.Id,
                 Speciality = visit.Doctor.Doctor.Speciality,
-                StartDate = visit.StartDate
+                StartDate = visit.StartDate,
+                Doctors = await _userService.GetDoctorsForSpeciality(visit.Doctor.Doctor.Speciality, visit.Doctor)
             });
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(CreateViewModel vm)
         {
+            if (vm.StartDate < DateTime.Now)
+            {
+                ModelState.AddModelError("StartDate", "Date must be in future!");
+                return View(vm);
+            }
+
             if (ModelState.IsValid)
             {
+                vm.StartDate = vm.StartDate.AddHours(2);
                 var visit = vm.ConvertToDataModel();
                 visit.Doctor = await _userService.GetById(vm.DoctorId);
+                visit.Patient = await _userService.GetById(vm.PatientId);
                 await _visitService.EditVisit(visit);
                 return RedirectToAction("Index");
             }
+
             return View(vm);
         }
     }

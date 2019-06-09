@@ -1,5 +1,5 @@
 ﻿@using Database.Models.Utilities;
-@model ClinicMVC.Models.VisitViewModels.CreateViewModel
+@model ClinicMVC.Models.VisitViewModels.EditViewModel
 
 
 @{
@@ -10,16 +10,18 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" class="form-control" />
+            </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
                 <input type="datetime-local" asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input hidden="hidden" asp-for="Patient" class="form-control" />
-                <span hidden="hidden" asp-validation-for="Patient" class="text-danger"></span>
+                <input type="hidden" asp-for="PatientId" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Speciality" class="control-label"></label>
@@ -28,7 +30,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="DoctorId" class="control-label"></label>
-                <select id="doctores" class="form-control" asp-for="DoctorId"></select>
+                <select id="doctores" class="form-control" asp-for="DoctorId">
+                    <option value="@Model.DoctorId">@Model.DoctorName</option>
+                    @if (Model.Doctors.Any())
+                    {
+                        @foreach (var item in Model.Doctors)
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
                 <span asp-validation-for="DoctorId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,11 +59,11 @@
 
     var url = '@Url.Action("GetDoctorsWithSpeciality", "Visit")';
         $.getJSON(url, {speciality: speciality}, function( data ) {
-  var options = $("#doctores");
-  $.each( data.data, function(key, val) {
-    options.append(new Option(val, key));
-  });
-});
-}
-</script>
+            var options = $("#doctores");
+            options.empty();
+            $.each( data.data, function(key, val) {
+                options.append(new Option(val, key));
+            });
+        });
+    }
 </script>

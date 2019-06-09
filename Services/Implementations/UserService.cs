@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Database;
 using Database.Models;
+using Database.Models.Utilities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -51,11 +52,34 @@ namespace Services.Implementations
             return user;
         }
 
+        public async Task<User> GetById(Guid id)
+        {
+            User user = await _dataContext.GetCollection<User>()
+                .AsQueryable().FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+            return user;
+        }
+
         public async Task<IEnumerable<User>> GetDoctors()
         {
             return await _dataContext.GetCollection<User>()
                 .AsQueryable()
                 .Where(x => x.Doctor != null).ToListAsync();
+        }
+
+        public async Task<Dictionary<string, string>> GetDoctorsForSpeciality(Specialties speciality, User doctor = null)
+        {
+            var doctors = new Dictionary<string, string>();
+            var doctorsTmp = await _dataContext.GetCollection<User>()
+                .AsQueryable()
+                .Where(x => x.Doctor != null && x.Doctor.Speciality == speciality)
+                .ToListAsync();
+
+            if (doctor != null)
+                doctorsTmp = doctorsTmp.Where(x => x.Id != doctor.Id).ToList();
+
+            doctorsTmp.ForEach(x => doctors.Add(x.Id.ToString(), x.GetFullName()));
+            return doctors;
         }
 
         public async Task<IEnumerable<User>> GetPatients()
@@ -83,7 +107,16 @@ namespace Services.Implementations
 
         public async Task<User> PatchUser(User user)
         {
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
+            var tmp = await _dataContext.GetCollection<User>()
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.Id.Equals(user.Id));
+
+            if (user.Password != null)
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            else
+                user.Password = tmp.Password;
+
             await _dataContext.GetCollection<User>()
                 .FindOneAndReplaceAsync(Builders<User>.Filter.Where(x => x.Id.Equals(user.Id)), user);
 
