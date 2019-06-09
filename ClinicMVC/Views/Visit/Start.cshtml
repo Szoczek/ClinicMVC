@@ -1,0 +1,48 @@
+﻿@model ClinicMVC.Models.VisitViewModels.StartViewModel
+@{
+    ViewData["Title"] = "Start";
+}
+
+<h1>Visit @Model.Id</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Start" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input readonly="readonly" type="datetime-local" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="PatientId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientName" class="control-label"></label>
+                <input readonly="readonly" asp-for="PatientName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="DoctorId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="DoctorName" class="control-label"></label>
+                <input readonly="readonly" asp-for="DoctorName" class="form-control" />
+            </div>
+            <div class="input-group-text">
+                <label asp-for="Notes" class="control-label"></label>
+                <textarea rows="20" cols="50" asp-for="Notes" class="form-control" placeholder="Notes about visit..."></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Finish" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<div>
+    <a class="btn btn-info" asp-action="DoctorIndex">Visits</a>
+</div>

@@ -132,5 +132,44 @@ namespace ClinicMVC.Controllers
 
             return View(vm);
         }
+
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> DoctorIndex()
+        {
+            var user = await _userService
+                .GetById(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var visits = await _visitService.GetDoctorVisits(user);
+
+            return View(visits);
+        }
+
+        public async Task<IActionResult> Start(Guid id)
+        {
+            var visit = await _visitService.GetVisitById(id);
+            return View(new StartViewModel()
+            {
+                Id = visit.Id,
+                DoctorId = visit.Doctor.Id,
+                DoctorName = visit.Doctor.GetFullName(),
+                PatientId = visit.Patient.Id,
+                PatientName = visit.Patient.GetFullName(),
+                StartDate = visit.StartDate,
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Start(StartViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var visit = vm.ConvertToDataModel();
+                visit.Doctor = await _userService.GetById(vm.DoctorId);
+                visit.Patient = await _userService.GetById(vm.PatientId);
+                await _visitService.EditVisit(visit);
+                return RedirectToAction("DoctorIndex");
+            }
+
+            return View(vm);
+        }
     }
 }

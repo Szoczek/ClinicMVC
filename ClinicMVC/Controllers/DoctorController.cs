@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ClinicMVC.Models.DoctorViewModels;
@@ -39,7 +40,7 @@ namespace ClinicMVC.Controllers
                 DateOfBirth = user.Doctor.DateOfBirth,
                 ContractId = user.Doctor.Contract.Id,
                 EndDate = user.Doctor.Contract.EndDate,
-                Salary = user.Doctor.Contract.Salary,
+                Salary = Math.Round(user.Doctor.Contract.Salary, 2).ToString(),
                 Speciality = user.Doctor.Speciality,
                 StartDate = user.Doctor.Contract.StartDate
             });

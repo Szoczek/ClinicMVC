@@ -117,6 +117,9 @@ namespace Services.Implementations
             else
                 user.Password = tmp.Password;
 
+            if (tmp.Doctor != null)
+                user.Doctor.Contract = tmp.Doctor.Contract;
+
             await _dataContext.GetCollection<User>()
                 .FindOneAndReplaceAsync(Builders<User>.Filter.Where(x => x.Id.Equals(user.Id)), user);
 

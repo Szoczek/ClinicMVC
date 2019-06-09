@@ -37,7 +37,7 @@ namespace Services.Implementations
               .CustomInstantiator(f => new Contract())
               .RuleFor(o => o.StartDate, f => f.Date.Recent(200))
               .RuleFor(o => o.EndDate, f => f.Date.Soon(720))
-              .RuleFor(o => o.Salary, f => f.Finance.Random.Decimal(3000.0M, 6000.0M));
+              .RuleFor(o => o.Salary, f => Math.Round(f.Finance.Random.Decimal(3000.0M, 6000.0M), 2));
 
             for (int i = 0; i < length; i++)
             {
@@ -75,8 +75,8 @@ namespace Services.Implementations
                .CustomInstantiator(f => new Visit())
                .RuleFor(o => o.StartDate, f => f.Date.Recent(365))
                .RuleFor(o => o.EndDate, f => f.Date.Recent(305))
-               .RuleFor(o => o.Patient, f => patients.ElementAt(f.Random.Int(0, patients.Count()-1)))
-               .RuleFor(o => o.Doctor, f => doctors.ElementAt(f.Random.Int(0, doctors.Count()-1)))
+               .RuleFor(o => o.Patient, f => patients.ElementAt(f.Random.Int(0, patients.Count() - 1)))
+               .RuleFor(o => o.Doctor, f => doctors.ElementAt(f.Random.Int(0, doctors.Count() - 1)))
                .RuleFor(o => o.EndDate, f => f.Date.Recent(305))
                .RuleFor(o => o.Notes, f => f.Lorem.Lines(3));
 

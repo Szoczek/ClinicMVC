@@ -13,8 +13,6 @@ namespace ClinicMVC.Models.DoctorViewModels
         [Required]
         [EmailAddress]
         public string Login { get; set; }
-        [Required]
-        [MinLength(6)]
         public string Password { get; set; }
         [Required]
         [Display(Name = "First name")]
@@ -31,8 +29,7 @@ namespace ClinicMVC.Models.DoctorViewModels
         public DateTime StartDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
-        [Required]
-        public decimal Salary { get; set; }
+        public string Salary { get; set; }
         [Required]
         public Guid ContractId { get; set; }
 
@@ -54,9 +51,9 @@ namespace ClinicMVC.Models.DoctorViewModels
 
             var contract = new Contract();
             contract.Id = this.ContractId;
+            contract.Salary = decimal.Parse(this.Salary);
             contract.StartDate = this.StartDate;
             contract.EndDate = this.EndDate;
-            contract.Salary = this.Salary;
             user.Doctor.Contract = contract;
 
             return user;
