@@ -67,7 +67,7 @@ namespace Services.Implementations
                 .Where(x => x.Doctor != null).ToListAsync();
         }
 
-        public async Task<Dictionary<string, string>> GetDoctorsForSpeciality(Specialties speciality, User doctor = null)
+        public async Task<Dictionary<string, string>> GetDoctorsForSpecialityExcludingDoctor(Specialties speciality, User doctor = null)
         {
             var doctors = new Dictionary<string, string>();
             var doctorsTmp = await _dataContext.GetCollection<User>()

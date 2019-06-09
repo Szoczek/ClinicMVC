@@ -17,6 +17,6 @@ namespace Services.Implementations
         Task<User> PatchUser(User user);
         Task<IEnumerable<User>> GetDoctors();
         Task<IEnumerable<User>> GetPatients();
-        Task<Dictionary<string, string>> GetDoctorsForSpeciality(Specialties speiciality, User doctor = null);
+        Task<Dictionary<string, string>> GetDoctorsForSpecialityExcludingDoctor(Specialties speiciality, User doctor = null);
     }
 }

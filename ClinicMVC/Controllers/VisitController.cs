@@ -46,7 +46,7 @@ namespace ClinicMVC.Controllers
             {
                 StartDate = now,
                 PatientId = user.Id,
-                Doctors = await _userService.GetDoctorsForSpeciality(Specialties.Pediatrics)
+                Doctors = await _userService.GetDoctorsForSpecialityExcludingDoctor(Specialties.Pediatrics)
             });
         }
 
@@ -70,7 +70,7 @@ namespace ClinicMVC.Controllers
             if (vm.StartDate < DateTime.Now)
             {
                 ModelState.AddModelError("StartDate", "Date must be in future!");
-                vm.Doctors = await _userService.GetDoctorsForSpeciality(vm.Speciality);
+                vm.Doctors = await _userService.GetDoctorsForSpecialityExcludingDoctor(vm.Speciality);
                 return View(vm);
             }
 
@@ -85,7 +85,7 @@ namespace ClinicMVC.Controllers
                 .CreateVisit(visit);
                 return RedirectToAction("Index");
             }
-            vm.Doctors = await _userService.GetDoctorsForSpeciality(vm.Speciality);
+            vm.Doctors = await _userService.GetDoctorsForSpecialityExcludingDoctor(vm.Speciality);
             return View(vm);
         }
 
@@ -107,7 +107,7 @@ namespace ClinicMVC.Controllers
                 PatientId = visit.Patient.Id,
                 Speciality = visit.Doctor.Doctor.Speciality,
                 StartDate = visit.StartDate,
-                Doctors = await _userService.GetDoctorsForSpeciality(visit.Doctor.Doctor.Speciality, visit.Doctor)
+                Doctors = await _userService.GetDoctorsForSpecialityExcludingDoctor(visit.Doctor.Doctor.Speciality, visit.Doctor)
             });
         }
 
