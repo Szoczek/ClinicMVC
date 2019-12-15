@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using ClinicMVC.Models;
 using Microsoft.AspNetCore.Authorization;
-using Services.Implementations;
+using Clinic.Services.Implementations;
 
 namespace ClinicMVC.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly DataService _dataService;
-        public HomeController(DataService dataService) => this._dataService = dataService;
+        private readonly FakeDataService _dataService;
+        public HomeController(FakeDataService dataService) => this._dataService = dataService;
         public IActionResult Index()
         {
             return View();

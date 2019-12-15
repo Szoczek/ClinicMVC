@@ -1,4 +1,4 @@
-﻿using Database.Models;
+﻿using Clinic.Database.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ClinicMVC.Models.UserViewModels

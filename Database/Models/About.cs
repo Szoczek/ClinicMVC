@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Database.Models
+namespace Clinic.Database.Models
 {
-    public class About
+    [Table("Abouts")]
+    public class About : BaseModel
     {
-        public Guid Id { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Address { get; set; }
-        public IEnumerable<string> OpeningHours { get; set; }
+        public List<string> OpeningHours { get; set; }
+
+        public About()
+        {
+            OpeningHours = new List<string>();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Database.Models;
+﻿using Clinic.Database.Models;
 using Database.Models.Utilities;
 using System;
 using System.Collections.Generic;

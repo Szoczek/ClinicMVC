@@ -1,16 +1,13 @@
-﻿using Database.Models.Utilities;
+﻿using Clinic.Database.Models.ExternalTypes;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Database.Models
+namespace Clinic.Database.Models
 {
-    public class Patient
+    [Table("Patients")]
+    public class Patient : BaseModel
     {
-        public Guid Id { get; set; }
         public DateTime DateOfBirth { get; set; }
         public BloodTypes BloodType { get; set; }
-
-        public bool IsMinor() => DateTime.Now
-                .Subtract(this.DateOfBirth)
-                .TotalDays < Constants.ADULTHOOD_IN_DAYS;
     }
 }

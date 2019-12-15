@@ -1,0 +1,17 @@
+﻿using Clinic.Database.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Clinic.Database.Abstract
+{
+    public interface IRepository<T> where T : BaseModel
+    {
+        Task<T> Get(Guid id);
+        Task<IEnumerable<T>> GetAll();
+        Task Update(T entity);
+        Task Create(T entity);
+        Task Delete(T entity);
+        Task Delete(Guid id);
+    }
+}

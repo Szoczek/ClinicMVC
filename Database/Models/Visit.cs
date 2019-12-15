@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Database.Models
+namespace Clinic.Database.Models
 {
-    public class Visit
+    [Table("Visits")]
+    public class Visit : BaseModel
     {
-        public Guid Id { get; set; }
         public DateTime StartDate { get; set; }
         public User Patient { get; set; }
         public User Doctor { get; set; }

@@ -1,0 +1,69 @@
+﻿@using Clinic.Database.Models.ExternalTypes;
+@model Clinic.WebApp.Models.VisitViewModels.EditVisitViewModel
+
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input type="datetime-local" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="PatientId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Speciality" class="control-label"></label>
+                <select id="spclt" class="form-control" asp-for="Speciality" asp-items="Html.GetEnumSelectList<Specialties>()" onchange="javascript:LoadDoctors()"></select>
+                <span asp-validation-for="Speciality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DoctorId" class="control-label"></label>
+                <select id="doctores" class="form-control" asp-for="DoctorId">
+                    <option value="@Model.DoctorId">@Model.DoctorName</option>
+                    @if (Model.Doctors.Any())
+                    {
+                        @foreach (var item in Model.Doctors)
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="DoctorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-info" asp-action="Index">Visits</a>
+</div>
+
+<script id="javascript">
+    function LoadDoctors() {
+        var speciality = $("#spclt").val();
+
+    var url = '@Url.Action("GetDoctorsWithSpeciality", "Visit")';
+        $.getJSON(url, {speciality: speciality}, function( data ) {
+            var options = $("#doctores");
+            options.empty();
+            $.each( data.data, function(key, val) {
+                options.append(new Option(val, key));
+            });
+        });
+    }
+</script>

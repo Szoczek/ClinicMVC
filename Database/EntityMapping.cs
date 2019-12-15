@@ -1,7 +1,7 @@
-﻿using Database.Models;
+﻿using Clinic.Database.Models;
 using MongoDB.Bson.Serialization;
 
-namespace Database
+namespace Clinic.Database
 {
     public static class EntityMapping
     {

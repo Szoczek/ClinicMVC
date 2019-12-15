@@ -1,12 +1,12 @@
-﻿using Database.Models.Utilities;
+﻿using Clinic.Database.Models.ExternalTypes;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Database.Models
+namespace Clinic.Database.Models
 {
-    public class Doctor
+    [Table("Doctors")]
+    public class Doctor : BaseModel
     {
-        public Guid Id { get; set; }
         public Contract Contract { get; set; }
         public Specialties Speciality { get; set; }
         public DateTime DateOfBirth { get; set; }

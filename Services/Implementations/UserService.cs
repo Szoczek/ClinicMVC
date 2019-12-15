@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Database;
-using Database.Models;
-using Database.Models.Utilities;
+using Clinic.Database;
+using Clinic.Database.Models;
+using Clinic.Database.Models.ExternalTypes;
+using Clinic.Services.Abstract;
+using Clinic.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Services.Utilities;
 
-namespace Services.Implementations
+namespace Clinic.Services.Implementations
 {
     public class UserService : IUserService
     {

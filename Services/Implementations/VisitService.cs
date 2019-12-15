@@ -1,18 +1,18 @@
-﻿using Database;
-using Database.Models;
+﻿using Clinic.Database;
+using Clinic.Database.Models;
+using Clinic.Services.Abstract;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Services.Implementations
+namespace Clinic.Services.Implementations
 {
     public class VisitService : IVisitService
     {
         private readonly DataContext _dataContext;
-        public VisitService(DataContext dataContext) => this._dataContext = dataContext;
+        public VisitService(DataContext dataContext) => _dataContext = dataContext;
 
         public async Task<Visit> CreateVisit(Visit visit)
         {

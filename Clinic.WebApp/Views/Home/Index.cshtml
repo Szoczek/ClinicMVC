@@ -1,0 +1,30 @@
+﻿@using Clinic.Utils;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="align-self-xl-center">
+    <div class="btn-group-vertical">
+        @if (User.IsInRole(UserRoles.Admin.ToString()))
+        {
+            <hr />
+            <a class="btn btn-success" asp-controller="Admin" asp-action="Index">Admin panel</a>
+        }
+        @if (User.IsInRole(UserRoles.Patient.ToString()))
+        {
+            <hr />
+            <a class="btn btn-success" asp-controller="Patient" asp-action="Index">Patient panel</a>
+        }
+        @if (User.IsInRole(UserRoles.Doctor.ToString()))
+        {
+
+            <hr />
+            <a class="btn btn-success" asp-controller="Doctor" asp-action="Index">Doctor panel</a>
+        }
+        @if (User.IsInRole(UserRoles.User.ToString()))
+        {
+            <h3> In order to access this application click button below and fill your patient card.</h3>
+            <a class="btn btn-info" asp-controller="Patient" asp-action="Create">Click me</a>
+        }
+    </div>
+</div>

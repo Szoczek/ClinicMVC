@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Database.Models
+namespace Clinic.Database.Models
 {
-    public class Contract
+    [Table("Contracts")]
+    public class Contract : BaseModel
     {
-        public Guid Id { get; set; }
         public DateTime StartDate { get; set; }
         public decimal Salary { get; set; }
         public DateTime EndDate { get; set; }

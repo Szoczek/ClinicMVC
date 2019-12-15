@@ -1,4 +1,4 @@
-﻿using Database.Models;
+﻿using Clinic.Database.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
