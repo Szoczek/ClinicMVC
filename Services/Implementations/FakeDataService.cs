@@ -1,24 +1,26 @@
 ﻿using Bogus;
 using Clinic.Database;
+using Clinic.Database.Implementations;
 using Clinic.Database.Models;
 using Clinic.Database.Models.ExternalTypes;
 using Clinic.Services.Abstract;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Clinic.Services.Implementations
 {
     public class FakeDataService : IFakeDataService
     {
-        private readonly DataContext _dataContext;
+        private readonly UnitOfWork _uow;
         private readonly UserService _userService;
-        public FakeDataService(DataContext dataContext, UserService userService)
+        public FakeDataService(UnitOfWork uow, UserService userService)
         {
-            _dataContext = dataContext;
+            _uow = uow;
             _userService = userService;
         }
 
-        public void GenerateDoctors(int length)
+        public async Task GenerateDoctorsAsync(int length)
         {
             var userFaker = new Faker<User>()
                 .CustomInstantiator(f => new User())
@@ -41,11 +43,11 @@ namespace Clinic.Services.Implementations
 
             for (int i = 0; i < length; i++)
             {
-                InsertDoctor(userFaker.Generate(1)[0], doctorFaker.Generate(1)[0], contractFaker.Generate(1)[0]);
+                await InsertDoctor(userFaker.Generate(1)[0], doctorFaker.Generate(1)[0], contractFaker.Generate(1)[0]);
             }
         }
 
-        public void GeneratePatients(int length)
+        public async Task GeneratePatientsAsync(int length)
         {
             var userFaker = new Faker<User>()
                .CustomInstantiator(f => new User())
@@ -62,11 +64,11 @@ namespace Clinic.Services.Implementations
 
             for (int i = 0; i < length; i++)
             {
-                InsertPatient(userFaker.Generate(1)[0], patientFaker.Generate(1)[0]);
+                await InsertPatient(userFaker.Generate(1)[0], patientFaker.Generate(1)[0]);
             }
         }
 
-        public void GenerateVisits(int length)
+        public async Task GenerateVisitsAsync(int length)
         {
             var patients = _userService.GetPatients().Result;
             var doctors = _userService.GetDoctors().Result;
@@ -82,11 +84,11 @@ namespace Clinic.Services.Implementations
 
             for (int i = 0; i < length; i++)
             {
-                InsertVisit(visitFaker.Generate(1)[0]);
+               await InsertVisit(visitFaker.Generate(1)[0]);
             }
         }
 
-        private void InsertDoctor(User user, Doctor doctor, Contract contract)
+        private async Task InsertDoctor(User user, Doctor doctor, Contract contract)
         {
             Guid id = new Guid();
 
@@ -96,11 +98,10 @@ namespace Clinic.Services.Implementations
             doctor.Contract = contract;
             user.Doctor = doctor;
 
-            _dataContext.GetCollection<User>()
-                .InsertOne(user);
+            await _uow.UserRepository.Create(user);
         }
 
-        private void InsertPatient(User user, Patient patient)
+        private async Task InsertPatient(User user, Patient patient)
         {
             Guid id = new Guid();
 
@@ -108,15 +109,13 @@ namespace Clinic.Services.Implementations
             patient.Id = id;
             user.Patient = patient;
 
-            _dataContext.GetCollection<User>()
-                .InsertOne(user);
+            await _uow.UserRepository.Create(user);
         }
 
-        private void InsertVisit(Visit visit)
+        private async Task InsertVisit(Visit visit)
         {
             visit.Id = new Guid();
-            _dataContext.GetCollection<Visit>()
-                .InsertOne(visit);
+           await _uow.VisitRepository.Create(visit);
         }
     }
 }

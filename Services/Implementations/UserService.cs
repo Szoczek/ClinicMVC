@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Clinic.Database;
+using Clinic.Database.Implementations;
 using Clinic.Database.Models;
 using Clinic.Database.Models.ExternalTypes;
 using Clinic.Services.Abstract;
 using Clinic.Utils;
+using Clinic.Utils.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -16,8 +17,8 @@ namespace Clinic.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly DataContext _dataContext;
-        public UserService(DataContext dataContext) => _dataContext = dataContext;
+        private readonly UnitOfWork _uow;
+        public UserService(UnitOfWork uow) => _uow = uow;
         public async Task<ClaimsPrincipal> Authenticate(User user)
         {
 
@@ -47,25 +48,18 @@ namespace Clinic.Services.Implementations
         public async Task<User> GetById(string id)
         {
             Guid userId = Guid.Parse(id);
-            User user = await _dataContext.GetCollection<User>()
-                .AsQueryable().FirstOrDefaultAsync(x => x.Id.Equals(userId));
-
-            return user;
+            return await _uow.UserRepository.Get(userId);
         }
 
         public async Task<User> GetById(Guid id)
         {
-            User user = await _dataContext.GetCollection<User>()
-                .AsQueryable().FirstOrDefaultAsync(x => x.Id.Equals(id));
-
-            return user;
+            return await _uow.UserRepository.Get(id);
         }
 
         public async Task<IEnumerable<User>> GetDoctors()
         {
-            return await _dataContext.GetCollection<User>()
-                .AsQueryable()
-                .Where(x => x.Doctor != null).ToListAsync();
+            var users = await _uow.UserRepository.GetAll();
+            return users.Where(x => x.Doctor != null).ToList();
         }
 
         public async Task<Dictionary<string, string>> GetDoctorsForSpecialityExcludingDoctor(Specialties speciality, User doctor = null)
@@ -143,5 +137,9 @@ namespace Clinic.Services.Implementations
                 .FirstOrDefaultAsync(x => x.Id.Equals(user.Id));
             return user;
         }
+    }
+
+    internal class Unitofwork
+    {
     }
 }

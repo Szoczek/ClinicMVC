@@ -26,9 +26,10 @@ namespace Clinic.Database
             var tableName = typeof(T).GetCustomAttribute<TableAttribute>(false).Name;
             return mongoDatabase.GetCollection<T>(tableName);
         }
-        private void StartSession()
+        private async Task StartSession()
         {
-            mongoSession = mongoClient.StartSession();
+            mongoSession = await mongoClient.StartSessionAsync();
+            mongoSession.StartTransaction();
         }
         public void CommitTransaction()
         {

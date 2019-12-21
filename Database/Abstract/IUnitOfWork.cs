@@ -11,6 +11,7 @@ namespace Clinic.Database.Abstract
         IRepository<Doctor> DoctorRepository { get; }
         IRepository<Visit> VisitRepository { get; }
         IRepository<Contract> ContractRepository { get; }
-        Task Save();
+        void Save();
+        Task SaveAsync();
     }
 }

@@ -19,14 +19,15 @@ namespace Clinic.Database.Implementations
         public IRepository<Visit> VisitRepository => VisitRepository ?? new Repository<Visit>(_context);
         public IRepository<Contract> ContractRepository => ContractRepository ?? new Repository<Contract>(_context);
 
-        public void Dispose()
+        public async void Dispose()
         {
+            await SaveAsync();
             _context.Dispose();
         }
 
         public void Save()
         {
-             _context.CommitTransaction();
+            _context.CommitTransaction();
         }
 
         public async Task SaveAsync()

@@ -1,9 +1,11 @@
-﻿namespace Clinic.Services.Abstract
+﻿using System.Threading.Tasks;
+
+namespace Clinic.Services.Abstract
 {
     public interface IFakeDataService
     {
-        void GeneratePatients(int length);
-        void GenerateDoctors(int length);
-        void GenerateVisits(int length);
+        Task GeneratePatientsAsync(int length);
+        Task GenerateDoctorsAsync(int length);
+        Task GenerateVisitsAsync(int length);
     }
 }

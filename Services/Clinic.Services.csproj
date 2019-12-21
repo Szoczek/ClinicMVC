@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Clinic.Utils\Clinic.Utils.csproj" />
     <ProjectReference Include="..\Database\Clinic.Database.csproj" />
   </ItemGroup>
 
