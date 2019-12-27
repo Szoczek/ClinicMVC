@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Clinic.Services.Implementations;
 using Clinic.Utils;
+using Clinic.WebApp.Controllers;
 using Clinic.WebApp.Models.UserViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicMVC.Controllers
 {
     [Authorize]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly UserService _userService;
         public UserController(UserService userService)
@@ -25,16 +26,23 @@ namespace ClinicMVC.Controllers
         [Authorize(Roles = nameof(UserRoles.User))]
         public async Task<IActionResult> Account()
         {
-            var user = await _userService
-                .GetById(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
-            return View(new UserViewModel()
+            try
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Login = user.Login,
-                Password = user.Password
-            });
+                var user = await _userService
+                .GetById(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+                return View(new UserViewModel()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Login = user.Login,
+                    Password = user.Password
+                });
+            }
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         [HttpPost]
@@ -58,70 +66,105 @@ namespace ClinicMVC.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            return View(new LoginViewModel());
+            try
+            {
+                return View(new LoginViewModel());
+            }
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    var user = await _userService.Login(vm.Login, vm.Password);
-                    var principal = await _userService.Authenticate(user);
-                    await HttpContext
-                        .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("Password", ex.Message);
-                    vm.Password = string.Empty;
-                    return View(vm);
+                    try
+                    {
+                        var user = await _userService.Login(vm.Login, vm.Password);
+                        var principal = await _userService.Authenticate(user);
+                        await HttpContext
+                            .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("Password", ex.Message);
+                        vm.Password = string.Empty;
+                        return View(vm);
+                    }
+
+                    if (string.IsNullOrWhiteSpace(returnUrl))
+                        return RedirectToAction("Index", "Home");
+
+                    return Redirect(returnUrl);
                 }
 
-                if (string.IsNullOrWhiteSpace(returnUrl))
-                    return RedirectToAction("Index", "Home");
-
-                return Redirect(returnUrl);
+                vm.Password = string.Empty;
+                return View(vm);
             }
-
-            vm.Password = string.Empty;
-            return View(vm);
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            try
+            {
+                await HttpContext.SignOutAsync();
 
-            return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         [AllowAnonymous]
         public IActionResult Register()
         {
-            return View(new RegisterViewModel());
+            try
+            {
+                return View(new RegisterViewModel());
+            }
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel vm)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = vm.ConvertToDataModel();
-                user = await _userService.Register(user);
+                if (ModelState.IsValid)
+                {
+                    var user = vm.ConvertToDataModel();
+                    user = await _userService.Register(user);
 
-                var principal = await _userService.Authenticate(user);
-                await HttpContext
-                    .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    var principal = await _userService.Authenticate(user);
+                    await HttpContext
+                        .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
+                }
+
+                vm.Password = string.Empty;
+                return View(vm);
             }
-
-            vm.Password = string.Empty;
-            return View(vm);
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
     }
 }

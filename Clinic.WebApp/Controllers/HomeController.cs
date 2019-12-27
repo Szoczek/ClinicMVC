@@ -1,49 +1,71 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Clinic.WebApp.Models;
 using Clinic.Services.Implementations;
 using Clinic.Utils;
 using System.Threading.Tasks;
+using Clinic.WebApp.Controllers;
+using System;
 
 namespace ClinicMVC.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly FakeDataService _dataService;
         public HomeController(FakeDataService dataService) => this._dataService = dataService;
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         [AllowAnonymous]
         public IActionResult Privacy()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         [AllowAnonymous]
         public IActionResult About()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return Error(ex);
+            }
         }
 
         [Authorize(Roles = nameof(UserRoles.Admin))]
         public async Task GenerateData(int quantity)
         {
-            await _dataService.GenerateDoctorsAsync(quantity);
-            await _dataService.GeneratePatientsAsync(quantity);
-            await _dataService.GenerateVisitsAsync(quantity);
+            try
+            {
+                await _dataService.GenerateDoctorsAsync(quantity);
+                await _dataService.GeneratePatientsAsync(quantity);
+                await _dataService.GenerateVisitsAsync(quantity);
 
-            RedirectToAction("Index");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Error(ex);
+            }
         }
     }
 }
