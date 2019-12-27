@@ -70,8 +70,8 @@ namespace Clinic.Services.Implementations
 
         public async Task GenerateVisitsAsync(int length)
         {
-            var patients = _userService.GetPatients().Result;
-            var doctors = _userService.GetDoctors().Result;
+            var patients = await _userService.GetPatients();
+            var doctors = await _userService.GetDoctors();
 
             var visitFaker = new Faker<Visit>()
                .CustomInstantiator(f => new Visit())
@@ -84,7 +84,7 @@ namespace Clinic.Services.Implementations
 
             for (int i = 0; i < length; i++)
             {
-               await InsertVisit(visitFaker.Generate(1)[0]);
+                await InsertVisit(visitFaker.Generate(1)[0]);
             }
         }
 
@@ -115,7 +115,7 @@ namespace Clinic.Services.Implementations
         private async Task InsertVisit(Visit visit)
         {
             visit.Id = new Guid();
-           await _uow.VisitRepository.Create(visit);
+            await _uow.VisitRepository.Create(visit);
         }
     }
 }

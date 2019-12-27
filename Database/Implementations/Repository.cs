@@ -28,7 +28,7 @@ namespace Clinic.Database.Implementations
 
             return null;
         }
-        public async Task<IEnumerable<T>> GetAll() => await _set.Find(x => true).ToListAsync();
+        public async Task<List<T>> GetAll() => await _set.Find(x => true).ToListAsync();
         public async Task Update(T entity) => await _set.ReplaceOneAsync(
                 x => x.Id == entity.Id,
                 entity);

@@ -1,4 +1,4 @@
-﻿using Clinic.Repositories.Abstract;
+﻿using Clinic.Database.Abstract;
 
 namespace Clinic.Services
 {

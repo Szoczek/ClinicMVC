@@ -14,10 +14,7 @@ namespace Clinic.Database.Implementations
         }
         public IRepository<About> AboutRepository => AboutRepository ?? new Repository<About>(_context);
         public IRepository<User> UserRepository => UserRepository ?? new Repository<User>(_context);
-        public IRepository<Patient> PatientRepository => PatientRepository ?? new Repository<Patient>(_context);
-        public IRepository<Doctor> DoctorRepository => DoctorRepository ?? new Repository<Doctor>(_context);
         public IRepository<Visit> VisitRepository => VisitRepository ?? new Repository<Visit>(_context);
-        public IRepository<Contract> ContractRepository => ContractRepository ?? new Repository<Contract>(_context);
 
         public async void Dispose()
         {
