@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Clinic.Database.Models.ExternalTypes;
 using Clinic.Services.Implementations;
+using Clinic.Utils;
+using Clinic.Utils.Extensions;
 using Clinic.WebApp.Models.VisitViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +26,7 @@ namespace ClinicMVC.Controllers
             this._visitService = visitService;
         }
 
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = nameof(UserRoles.Patient))]
         public async Task<IActionResult> Index()
         {
             var user = await _userService
@@ -34,7 +36,7 @@ namespace ClinicMVC.Controllers
             return View(visits);
         }
 
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = nameof(UserRoles.Patient))]
         public async Task<IActionResult> Create()
         {
             var user = await _userService
@@ -52,14 +54,13 @@ namespace ClinicMVC.Controllers
 
 
         [HttpGet]
-        public JsonResult GetDoctorsWithSpeciality(Specialties speciality)
+        public async Task<JsonResult> GetDoctorsWithSpeciality(Specialties speciality)
         {
             var doctors = new Dictionary<string, string>();
-            _userService.GetDoctors()
-               .Result
-           .Where(x => x.IsDoctor() && x.Doctor.Speciality.Equals(speciality))
-           .ToList()
-           .ForEach(x => doctors.Add(x.Id.ToString(), x.GetFullName()));
+            var tmp = await _userService.GetDoctors();
+            tmp.Where(x => x.IsDoctor() && x.Doctor.Speciality.Equals(speciality))
+            .ToList()
+            .ForEach(x => doctors.Add(x.Id.ToString(), x.GetFullName()));
 
             return Json(new { ok = false, data = doctors, message = "ok" });
         }
@@ -133,7 +134,7 @@ namespace ClinicMVC.Controllers
             return View(vm);
         }
 
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = nameof(UserRoles.Doctor))]
         public async Task<IActionResult> DoctorIndex()
         {
             var user = await _userService

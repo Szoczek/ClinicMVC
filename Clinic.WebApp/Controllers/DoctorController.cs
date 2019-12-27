@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Clinic.Services.Implementations;
+using Clinic.Utils;
 using Clinic.WebApp.Models.DoctorViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -19,13 +20,13 @@ namespace ClinicMVC.Controllers
         {
             this._userService = userService;
         }
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = nameof(UserRoles.Doctor))]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = nameof(UserRoles.Doctor))]
         public async Task<IActionResult> Account()
         {
             var user = await _userService

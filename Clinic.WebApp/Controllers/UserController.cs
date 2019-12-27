@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Clinic.Services.Implementations;
+using Clinic.Utils;
 using Clinic.WebApp.Models.UserViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -21,7 +22,7 @@ namespace ClinicMVC.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = nameof(UserRoles.User))]
         public async Task<IActionResult> Account()
         {
             var user = await _userService

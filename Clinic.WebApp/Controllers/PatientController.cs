@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Clinic.Services.Implementations;
+using Clinic.Utils;
 using Clinic.WebApp.Models.PatientViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -19,13 +20,13 @@ namespace ClinicMVC.Controllers
             this._userService = userService;
         }
 
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = nameof(UserRoles.User))]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = nameof(UserRoles.User))]
         public async Task<IActionResult> Create()
         {
             var user = await _userService
@@ -58,7 +59,7 @@ namespace ClinicMVC.Controllers
             return View(vm);
         }
 
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = nameof(UserRoles.Patient))]
         public async Task<IActionResult> Account()
         {
             var user = await _userService

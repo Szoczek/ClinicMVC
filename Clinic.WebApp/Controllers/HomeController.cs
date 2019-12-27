@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Clinic.WebApp.Models;
 using Clinic.Services.Implementations;
+using Clinic.Utils;
+using System.Threading.Tasks;
 
 namespace ClinicMVC.Controllers
 {
@@ -28,12 +30,12 @@ namespace ClinicMVC.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
-        public void GenerateData(int quantity)
+        [Authorize(Roles = nameof(UserRoles.Admin))]
+        public async Task GenerateData(int quantity)
         {
-            _dataService.GenerateDoctors(quantity);
-            _dataService.GeneratePatients(quantity);
-            _dataService.GenerateVisits(quantity);
+            await _dataService.GenerateDoctorsAsync(quantity);
+            await _dataService.GeneratePatientsAsync(quantity);
+            await _dataService.GenerateVisitsAsync(quantity);
 
             RedirectToAction("Index");
         }
