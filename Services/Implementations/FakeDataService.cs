@@ -114,7 +114,6 @@ namespace Clinic.Services.Implementations
 
         private async Task InsertVisit(Visit visit)
         {
-            visit.Id = new Guid();
             await _uow.VisitRepository.Create(visit);
         }
     }

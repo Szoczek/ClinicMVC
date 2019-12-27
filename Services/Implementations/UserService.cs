@@ -43,24 +43,20 @@ namespace Clinic.Services.Implementations
 
             return await Task.FromResult(principal);
         }
-
         public async Task<User> GetById(string id)
         {
             Guid userId = Guid.Parse(id);
-            return await _unitOfWork.UserRepository.Get(userId);
+            return await GetById(userId);
         }
-
         public async Task<User> GetById(Guid id)
         {
-            return await _unitOfWork.UserRepository.Get(id);
+            return await _unitOfWork.UserRepository.GetById(id);
         }
-
         public async Task<IEnumerable<User>> GetDoctors()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
             return users.Where(x => x.Doctor != null).ToList();
         }
-
         public async Task<Dictionary<string, string>> GetDoctorsForSpecialityExcludingDoctor(Specialties speciality, User doctor = null)
         {
             var doctors = new Dictionary<string, string>();
@@ -76,7 +72,6 @@ namespace Clinic.Services.Implementations
             doctorsTmp.ForEach(x => doctors.Add(x.Id.ToString(), x.GetFullName()));
             return doctors;
         }
-
         public async Task<IEnumerable<User>> GetPatients()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
@@ -95,10 +90,9 @@ namespace Clinic.Services.Implementations
 
             return user;
         }
-
         public async Task<User> PatchUser(User user)
         {
-            var tmp = await _unitOfWork.UserRepository.Get(user.Id);
+            var tmp = await GetById(user.Id);
 
             if (user.Password != null)
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
@@ -109,16 +103,14 @@ namespace Clinic.Services.Implementations
                 user.Doctor.Contract = tmp.Doctor.Contract;
 
             await _unitOfWork.UserRepository.Update(user);
-            return await _unitOfWork.UserRepository.Get(user.Id);
+            return await GetById(user.Id);
         }
-
         public async Task<User> Register(User user)
         {
-            user.Id = Guid.NewGuid();
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             await _unitOfWork.UserRepository.Create(user);
 
-            return await _unitOfWork.UserRepository.Get(user.Id);
+            return await GetById(user.Id);
         }
     }
 }
