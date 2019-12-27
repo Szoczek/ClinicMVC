@@ -19,8 +19,8 @@ namespace Clinic.Database.Implementations
         }
         public async Task Create(T entity) => await _set.InsertOneAsync(entity);
         public async Task Delete(T entity) => await _set.DeleteOneAsync(x => x == entity);
-        public async Task Delete(Guid id) => await _set.DeleteOneAsync(x => x.Id == id);
-        public async Task<T> Get(Guid id)
+        public async Task DeleteById(Guid id) => await _set.DeleteOneAsync(x => x.Id == id);
+        public async Task<T> GetById(Guid id)
         {
             using var cursor = await _set.FindAsync(Builders<T>.Filter.Where(x => x.Id == id));
             while (await cursor.MoveNextAsync())

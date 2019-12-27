@@ -7,11 +7,11 @@ namespace Clinic.Database.Abstract
 {
     public interface IRepository<T> where T : BaseModel
     {
-        Task<T> Get(Guid id);
+        Task<T> GetById(Guid id);
         Task<List<T>> GetAll();
         Task Update(T entity);
         Task Create(T entity);
         Task Delete(T entity);
-        Task Delete(Guid id);
+        Task DeleteById(Guid id);
     }
 }
