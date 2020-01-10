@@ -5,14 +5,16 @@ using Clinic.Utils;
 using System.Threading.Tasks;
 using Clinic.WebApp.Controllers;
 using System;
+using Clinic.Services.Abstract;
 
 namespace ClinicMVC.Controllers
 {
     [Authorize]
     public class HomeController : BaseController
     {
-        private readonly FakeDataService _dataService;
-        public HomeController(FakeDataService dataService) => this._dataService = dataService;
+        private readonly IFakeDataService _dataService;
+        public HomeController(IFakeDataService dataService) => this._dataService = dataService;
+
         public IActionResult Index()
         {
             try

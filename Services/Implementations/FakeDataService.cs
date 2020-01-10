@@ -1,6 +1,5 @@
 ﻿using Bogus;
-using Clinic.Database;
-using Clinic.Database.Implementations;
+using Clinic.Database.Abstract;
 using Clinic.Database.Models;
 using Clinic.Database.Models.ExternalTypes;
 using Clinic.Services.Abstract;
@@ -12,9 +11,9 @@ namespace Clinic.Services.Implementations
 {
     public class FakeDataService : IFakeDataService
     {
-        private readonly UnitOfWork _uow;
-        private readonly UserService _userService;
-        public FakeDataService(UnitOfWork uow, UserService userService)
+        private readonly IUnitOfWork _uow;
+        private readonly IUserService _userService;
+        public FakeDataService(IUnitOfWork uow, IUserService userService)
         {
             _uow = uow;
             _userService = userService;

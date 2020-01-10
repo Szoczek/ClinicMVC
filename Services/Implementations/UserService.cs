@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Clinic.Database.Implementations;
+using Clinic.Database.Abstract;
 using Clinic.Database.Models;
 using Clinic.Database.Models.ExternalTypes;
 using Clinic.Services.Abstract;
@@ -17,7 +17,7 @@ namespace Clinic.Services.Implementations
 {
     public class UserService : ServiceBase, IUserService
     {
-        public UserService(UnitOfWork uow) : base(uow) { }
+        public UserService(IUnitOfWork uow) : base(uow) { }
         public async Task<ClaimsPrincipal> Authenticate(User user)
         {
 

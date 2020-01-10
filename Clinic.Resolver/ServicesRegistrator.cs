@@ -11,11 +11,11 @@ namespace Clinic.Resolver
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            services.AddSingleton<IFakeDataService, FakeDataService>();
+            services.AddSingleton<MongoDbContext>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IVisitService, VisitService>();
-            services.AddSingleton<MongoDbContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IFakeDataService, FakeDataService>();
         }
     }
 }

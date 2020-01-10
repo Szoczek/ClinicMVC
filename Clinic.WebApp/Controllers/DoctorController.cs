@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Clinic.Services.Implementations;
+using Clinic.Services.Abstract;
 using Clinic.Utils;
 using Clinic.WebApp.Controllers;
 using Clinic.WebApp.Models.DoctorViewModels;
@@ -16,8 +16,8 @@ namespace ClinicMVC.Controllers
     [Authorize]
     public class DoctorController : BaseController
     {
-        private readonly UserService _userService;
-        public DoctorController(UserService userService)
+        private readonly IUserService _userService;
+        public DoctorController(IUserService userService)
         {
             this._userService = userService;
         }

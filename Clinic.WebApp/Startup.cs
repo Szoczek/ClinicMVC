@@ -22,8 +22,8 @@ namespace Clinic.WebApp
         {
             CookiesConfigurator.ConfigureCookies(services);
             AuthenticationRegistrator.RegisterAuthentication(services);
-            ServicesRegistrator.RegisterServices(services);
             SettingsRegistrator.RegisterSettings(services, Configuration);
+            ServicesRegistrator.RegisterServices(services);
 
             services.AddControllersWithViews();
         }

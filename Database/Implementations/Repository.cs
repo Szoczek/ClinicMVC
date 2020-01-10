@@ -19,7 +19,7 @@ namespace Clinic.Database.Implementations
         }
         public async Task Create(T entity)
         {
-            if (entity.Id == null)
+            if (entity.Id == null || entity.Id == Guid.Empty)
                 entity.Id = Guid.NewGuid();
 
             await _set.InsertOneAsync(entity);

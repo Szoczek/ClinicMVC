@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Clinic.Services.Implementations;
+using Clinic.Services.Abstract;
 using Clinic.Utils;
 using Clinic.WebApp.Controllers;
 using Clinic.WebApp.Models.UserViewModels;
@@ -17,8 +17,8 @@ namespace ClinicMVC.Controllers
     [Authorize]
     public class UserController : BaseController
     {
-        private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -87,9 +87,16 @@ namespace ClinicMVC.Controllers
                     try
                     {
                         var user = await _userService.Login(vm.Login, vm.Password);
-                        var principal = await _userService.Authenticate(user);
+                        var principal =  await _userService.Authenticate(user);
+                        var authProperties = new AuthenticationProperties
+                        {
+                            AllowRefresh = true,
+                            ExpiresUtc = DateTimeOffset.Now.AddDays(1),
+                            IsPersistent = true,
+                        };
+
                         await HttpContext
-                            .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                            .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
                     }
                     catch (Exception ex)
                     {

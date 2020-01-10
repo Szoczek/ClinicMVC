@@ -10,10 +10,10 @@ namespace Clinic.Resolver
     {
         public static void RegisterSettings(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<ClinicDatabaseSettings>(
+            services.AddSingleton<IClinicDatabaseSettings, ClinicDatabaseSettings>();
+            services.Configure<IClinicDatabaseSettings>(
                 configuration.GetSection(nameof(ClinicDatabaseSettings)));
 
-            services.AddSingleton<IClinicDatabaseSettings, ClinicDatabaseSettings>();
             services.AddSingleton<SettingsManager>();
         }
     }

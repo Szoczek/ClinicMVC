@@ -1,11 +1,11 @@
-﻿using Clinic.Settings.Implementations;
+﻿using Clinic.Settings.Abstract;
 
 namespace Clinic.Settings
 {
     public class SettingsManager
     {
-        public ClinicDatabaseSettings DatabaseSettings;
-        public SettingsManager(ClinicDatabaseSettings databaseSettings)
+        public IClinicDatabaseSettings DatabaseSettings;
+        public SettingsManager(IClinicDatabaseSettings databaseSettings)
         {
             this.DatabaseSettings = databaseSettings;
         }

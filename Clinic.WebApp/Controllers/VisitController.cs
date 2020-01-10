@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Clinic.Database.Models.ExternalTypes;
-using Clinic.Services.Implementations;
+using Clinic.Services.Abstract;
 using Clinic.Utils;
 using Clinic.Utils.Extensions;
 using Clinic.WebApp.Controllers;
@@ -18,10 +18,10 @@ namespace ClinicMVC.Controllers
     [Authorize]
     public class VisitController : BaseController
     {
-        private readonly UserService _userService;
-        private readonly VisitService _visitService;
+        private readonly IUserService _userService;
+        private readonly IVisitService _visitService;
 
-        public VisitController(UserService userService, VisitService visitService)
+        public VisitController(IUserService userService, IVisitService visitService)
         {
             this._userService = userService;
             this._visitService = visitService;

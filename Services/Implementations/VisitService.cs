@@ -1,4 +1,4 @@
-﻿using Clinic.Database.Implementations;
+﻿using Clinic.Database.Abstract;
 using Clinic.Database.Models;
 using Clinic.Services.Abstract;
 using MongoDB.Driver;
@@ -12,7 +12,7 @@ namespace Clinic.Services.Implementations
 {
     public class VisitService : ServiceBase, IVisitService
     {
-        public VisitService(UnitOfWork uow) : base(uow) { }
+        public VisitService(IUnitOfWork uow) : base(uow) { }
 
         public async Task<Visit> CreateVisit(Visit visit)
         {

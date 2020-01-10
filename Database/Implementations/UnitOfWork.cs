@@ -8,13 +8,14 @@ namespace Clinic.Database.Implementations
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly MongoDbContext _context;
+        public IRepository<About> AboutRepository => new Repository<About>(_context);
+        public IRepository<User> UserRepository => new Repository<User>(_context);
+        public IRepository<Visit> VisitRepository => new Repository<Visit>(_context);
         public UnitOfWork(MongoDbContext context)
         {
             _context = context;
         }
-        public IRepository<About> AboutRepository => AboutRepository ?? new Repository<About>(_context);
-        public IRepository<User> UserRepository => UserRepository ?? new Repository<User>(_context);
-        public IRepository<Visit> VisitRepository => VisitRepository ?? new Repository<Visit>(_context);
+
 
         public async void Dispose()
         {
