@@ -20,7 +20,6 @@ namespace Clinic.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            CookiesConfigurator.ConfigureCookies(services);
             AuthenticationRegistrator.RegisterAuthentication(services);
             SettingsRegistrator.RegisterSettings(services, Configuration);
             ServicesRegistrator.RegisterServices(services);
@@ -43,8 +42,9 @@ namespace Clinic.WebApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
             app.UseRouting();
+            app.UseCookiePolicy(CookiesConfigurator.ConfigureCookies());
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

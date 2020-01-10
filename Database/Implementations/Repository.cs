@@ -3,6 +3,7 @@ using Clinic.Database.Models;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Clinic.Database.Implementations
@@ -35,11 +36,13 @@ namespace Clinic.Database.Implementations
         }
         public async Task<T> GetById(Guid id)
         {
-            using var cursor = await _set.FindAsync(Builders<T>.Filter.Where(x => x.Id == id));
-            while (await cursor.MoveNextAsync())
-                return await cursor.FirstOrDefaultAsync();
+            var all = await GetAll();
+            return all.FirstOrDefault(x => x.Id == id);
+            //using var cursor = await _set.FindAsync(Builders<T>.Filter.Where(x => x.Id == id));
+            //while (await cursor.MoveNextAsync())
+            //    return await cursor.FirstOrDefaultAsync();
 
-            return null;
+            //return null;
         }
         public async Task<List<T>> GetAll()
         {

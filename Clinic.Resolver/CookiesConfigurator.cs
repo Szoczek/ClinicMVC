@@ -6,13 +6,13 @@ namespace Clinic.Resolver
 {
     public class CookiesConfigurator
     {
-        public static void ConfigureCookies(IServiceCollection services)
+        public static CookiePolicyOptions ConfigureCookies()
         {
-            services.Configure<CookiePolicyOptions>(options =>
+            return new CookiePolicyOptions()
             {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+                CheckConsentNeeded = context => true,
+                MinimumSameSitePolicy = SameSiteMode.None
+            };
         }
     }
 }

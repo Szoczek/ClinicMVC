@@ -88,15 +88,8 @@ namespace ClinicMVC.Controllers
                     {
                         var user = await _userService.Login(vm.Login, vm.Password);
                         var principal =  await _userService.Authenticate(user);
-                        var authProperties = new AuthenticationProperties
-                        {
-                            AllowRefresh = true,
-                            ExpiresUtc = DateTimeOffset.Now.AddDays(1),
-                            IsPersistent = true,
-                        };
-
                         await HttpContext
-                            .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+                            .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                     }
                     catch (Exception ex)
                     {

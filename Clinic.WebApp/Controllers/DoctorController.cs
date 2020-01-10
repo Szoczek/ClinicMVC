@@ -42,6 +42,7 @@ namespace ClinicMVC.Controllers
             {
                 var user = await _userService
                     .GetById(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+
                 return View(new DoctorViewModel()
                 {
                     Id = user.Id,
