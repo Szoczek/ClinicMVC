@@ -13,7 +13,7 @@ using Clinic.WebApp.Models.VisitViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicMVC.Controllers
+namespace Clinic.WebApp.Controllers
 {
     [Authorize]
     public class VisitController : BaseController

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicMVC.Controllers
+namespace Clinic.WebApp.Controllers
 {
     [Authorize]
     public class UserController : BaseController

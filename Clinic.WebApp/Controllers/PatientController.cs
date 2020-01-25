@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicMVC.Controllers
+namespace Clinic.WebApp.Controllers
 {
     [Authorize]
     public class PatientController : BaseController
@@ -22,7 +22,7 @@ namespace ClinicMVC.Controllers
             this._userService = userService;
         }
 
-        [Authorize(Roles = nameof(UserRoles.User))]
+        [Authorize(Roles = nameof(UserRoles.Patient))]
         public IActionResult Index()
         {
             try
@@ -35,7 +35,7 @@ namespace ClinicMVC.Controllers
             }
         }
 
-        [Authorize(Roles = nameof(UserRoles.User))]
+        [Authorize(Roles = nameof(UserRoles.Patient))]
         public async Task<IActionResult> Create()
         {
             try

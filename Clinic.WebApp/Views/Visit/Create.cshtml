@@ -49,11 +49,11 @@
     <a class="btn btn-info" asp-action="Index" asp-controller="Home">Home</a>
 </div>
 
-<script id="javascript">
+<script>
     function LoadDoctors() {
         var speciality = $("#spclt").val();
 
-    var url = '@Url.Action("GetDoctorsWithSpeciality", "Visit")';
+    var url = '@Url.Action("GetDoctorsWithSpecialit", "Visit")';
         $.getJSON(url, {speciality: speciality}, function( data ) {
             var options = $("#doctores");
             options.empty();

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ClinicMVC.Controllers
+namespace Clinic.WebApp.Controllers
 {
     [Authorize]
     public class DoctorController : BaseController

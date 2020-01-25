@@ -7,7 +7,7 @@ using Clinic.WebApp.Controllers;
 using System;
 using Clinic.Services.Abstract;
 
-namespace ClinicMVC.Controllers
+namespace Clinic.WebApp.Controllers
 {
     [Authorize]
     public class HomeController : BaseController
