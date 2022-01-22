@@ -16,7 +16,9 @@ namespace Clinic.Database
         public MongoDbContext(SettingsManager settings)
         {
             MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
-            mongoClient = new MongoClient(settings.DatabaseSettings.ConnectionString);
+            var dbSettings = MongoClientSettings.FromConnectionString(settings.DatabaseSettings.ConnectionString);
+
+            mongoClient = new MongoClient(dbSettings);
             mongoDatabase = mongoClient.GetDatabase(settings.DatabaseSettings.DatabaseName);
             StartSession();
         }
